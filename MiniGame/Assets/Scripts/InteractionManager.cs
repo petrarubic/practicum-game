@@ -280,7 +280,10 @@ public class InteractionManager : MonoBehaviour
         if (hitObj.TryGetComponent<Item>(out pickupableScript))
         {
             isHit = true;
-            Destroy(pickupableScript.gameObject);
+
+            if (InputManager.IsInteractionKeyPressed())
+                Destroy(pickupableScript.gameObject);
+            
         }
 
         return isHit;

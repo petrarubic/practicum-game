@@ -105,8 +105,8 @@ public class NumberChange : Trigger {
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit))
             {
-                Debug.Log(hit.collider.gameObject.name);
-                if (hit.collider.gameObject.name == "Numbers2")
+                Debug.Log(hit.collider.gameObject.tag);
+                if (hit.collider.gameObject.tag == "Numbers")
                 {
                     if (secondUnlocked && secondDigitCorrect == false)
                     {
