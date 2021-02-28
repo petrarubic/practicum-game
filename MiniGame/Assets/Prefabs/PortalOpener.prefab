@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6277519405433751807}
   - component: {fileID: 6967597724616034138}
   - component: {fileID: 5140039284893414288}
+  - component: {fileID: 401581445}
+  - component: {fileID: 401581442}
   m_Layer: 0
   m_Name: PortalOpener
   m_TagString: Untagged
@@ -25,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6653481375413326405}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.097531, y: 0, z: -23.323278}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
@@ -80,3 +82,49 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &401581445
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6653481375413326405}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.63326424, y: 0.5114547, z: 0.6332644}
+  m_Center: {x: -0.000000059604645, y: 0.25572735, z: -0.0000009536743}
+--- !u!114 &401581442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6653481375413326405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 914793919dbbaa54295258d74b765d5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+  - {fileID: 0}
+  isTriggered: 0
+  canTriggerWithInteractionPress: 1
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 401581442}
+        m_MethodName: SpawnPortalSphere
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  portalSphere: {fileID: 2209898199624567912, guid: 8727306684bf383459a70f71b113252b,
+    type: 3}
+  spherePosition: {fileID: 0}
