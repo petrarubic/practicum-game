@@ -134,8 +134,8 @@ public class LoadSaveTestController : USceneController
         var generateBoxButton = new UButton("GenerateButton");
 
         generateBoxButton.OnClick(() => {
-            var box = AssetProvider.GetAsset(GameAsset.Box);
-            box.transform.position = HelperFunctions.RandomVector(5, 5, 5);
+            //var box = AssetProvider.GetAsset(GameAsset.Box);
+            //box.transform.position = HelperFunctions.RandomVector(5, 5, 5);
         });
 
         //saveButton.SetText("New text");
@@ -156,28 +156,28 @@ public enum LoadableGameObject
 
 public class LoadableAssetsProvider
 {
-    public static GameObject GetLoadableGameObject(LoadableGameObject loadable)
-    {
-        return AssetProvider.GetAsset(GameAssetTypeFromLoadableObject(loadable));
-    }
+    //public static GameObject GetLoadableGameObject(LoadableGameObject loadable)
+    //{
+    //    return AssetProvider.GetAsset(GameAssetTypeFromLoadableObject(loadable));
+    //}
 
-    public static GameAsset GameAssetTypeFromLoadableObject(LoadableGameObject loadable)
-    {
-        switch (loadable)
-        {
-            case LoadableGameObject.Box:
-                return GameAsset.Box;
-            default:
-                return GameAsset.Archer;
-        }
-    }
+    //public static GameAsset GameAssetTypeFromLoadableObject(LoadableGameObject loadable)
+    //{
+    //    //switch (loadable)
+    //    //{
+    //    //    case LoadableGameObject.Box:
+    //    //        return GameAsset.Box;
+    //    //    default:
+    //    //        return GameAsset.Archer;
+    //    //}
+    //}
 
-    public static ISaveLoadable GenerateLoadableObjectFromSnapshot(Dictionary<string, object> snapshotData)
-    {
-        var type = (LoadableGameObject)snapshotData["type"];
-        var newObject = GetLoadableGameObject(type).GetComponent<ISaveLoadable>();
-        newObject.ApplyData(snapshotData);
+    //public static ISaveLoadable GenerateLoadableObjectFromSnapshot(Dictionary<string, object> snapshotData)
+    //{
+    //    var type = (LoadableGameObject)snapshotData["type"];
+    //    var newObject = GetLoadableGameObject(type).GetComponent<ISaveLoadable>();
+    //    newObject.ApplyData(snapshotData);
 
-        return newObject;
-    }
+    //    return newObject;
+    //}
 }

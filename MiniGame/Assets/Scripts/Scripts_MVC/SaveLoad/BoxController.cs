@@ -11,8 +11,8 @@ public class BoxController : MonoBehaviour
     {
         saveLoadable = GetComponent<ISaveLoadable>();
         //register this as poolable
-        var gameAssetType = LoadableAssetsProvider.GameAssetTypeFromLoadableObject(saveLoadable.Type);
-        poolable = AssetProvider.Instance.RegisterObjectAsPoolable(gameObject, gameAssetType);
+        //var gameAssetType = LoadableAssetsProvider.GameAssetTypeFromLoadableObject(saveLoadable.Type);
+        //poolable = AssetProvider.Instance.RegisterObjectAsPoolable(gameObject, gameAssetType);
     }
 
     private void OnMouseUp()

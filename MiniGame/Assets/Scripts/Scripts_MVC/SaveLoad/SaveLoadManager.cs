@@ -75,8 +75,8 @@ public class SaveLoadManager
 
         foreach (var snapshot in snapshotCopy.Values)
         {
-            var newElement = LoadableAssetsProvider.GenerateLoadableObjectFromSnapshot(snapshot);
-            newElement.Activate();
+            //var newElement = LoadableAssetsProvider.GenerateLoadableObjectFromSnapshot(snapshot);
+            //newElement.Activate();
         }
 
         //remove objects created after taking a snapshot (toRemove)

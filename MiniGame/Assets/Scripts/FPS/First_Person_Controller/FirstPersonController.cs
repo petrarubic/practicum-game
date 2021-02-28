@@ -7,6 +7,8 @@ namespace VHS
     [RequireComponent(typeof(CharacterController))]
     public class FirstPersonController : MonoBehaviour
     {
+        public static FirstPersonController instance;
+
         #region Variables
             #region Private Serialized     
                 #region Data
@@ -558,6 +560,11 @@ namespace VHS
                 protected virtual void ApplyMovement()
                 {
                     m_characterController.Move(m_finalMoveVector * Time.deltaTime);
+                }
+
+                public void TeleportPlayer(Vector3 newPos)
+                {
+                    m_characterController.Move(newPos);
                 }
 
                 protected virtual void RotateTowardsCamera()

@@ -10,7 +10,7 @@ public class UIController : USceneController
     public override void SceneDidLoad()
     {
         //UIGeneratedThis.Init();
-        SetButtons();
+        //SetButtons();
         Debug.Log("UISceneController loaded");
     }
 
