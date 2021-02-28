@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 using VHS;
 
 public class InputManager : MonoBehaviour
@@ -31,7 +30,6 @@ public class InputManager : MonoBehaviour
 
 
     [SerializeField] private MovementInputData movementInputData = null;
-    private PlayerInput inputActions;
     private Vector2 moveValues;
     private Vector2 cameraRotInput;
     private bool isCrouchPressed;
@@ -40,15 +38,6 @@ public class InputManager : MonoBehaviour
 
     private void Awake() {
         instance = this;
-        inputActions = new PlayerInput();
-        inputActions.Player.Move.performed += SetMoveValues;
-        inputActions.Player.MouseRotation.performed += SetCameraRotValues;
-        inputActions.Player.Run.started += ctx => SetRunValues(true);
-        inputActions.Player.Run.canceled += ctx => SetRunValues(false);
-        inputActions.Player.Crouch.started += ctx => SetCrouchValues(true);
-        inputActions.Player.Crouch.canceled += ctx => SetCrouchValues(false);
-        inputActions.Player.Jump.started += ctx => SetJumpValues(true);
-        inputActions.Player.Jump.canceled += ctx => SetJumpValues(false);
     }
 
     private void Start() {
@@ -75,53 +64,6 @@ public class InputManager : MonoBehaviour
 
         movementInputData.JumpClicked = IsJumpKeyPressed();
         movementInputData.CrouchClicked = IsCrouchKeyPressed();
-    }
-
-
-    // MOVEMENT - NEW INPUT SYSTEM
-
-    private void SetMoveValues(InputAction.CallbackContext ctx) {
-        moveValues = ctx.ReadValue<Vector2>();
-    }
-    private void SetCameraRotValues(InputAction.CallbackContext ctx) {
-        cameraRotInput = ctx.ReadValue<Vector2>();
-    }
-    private void SetRunValues(bool runValues) {
-        movementInputData.RunReleased = !runValues;
-        movementInputData.RunClicked = runValues;
-    }
-    private void SetCrouchValues(bool setCrouch) {
-        isCrouchPressed = setCrouch;
-    }
-    private void SetJumpValues(bool setJump) {
-        isJumpPressed = setJump;
-    }
-
-    public Vector2 GetMoveValue() {
-        return moveValues;
-    }
-    public Vector2 GetCameraRotValue() {
-        return cameraRotInput;
-    }
-    public bool GetRunValue() {
-        return movementInputData.RunClicked;
-    }
-    public bool GetRunReleaseValue() {
-        return movementInputData.RunReleased;
-    }
-    public bool GetCrouchValue() {
-        return movementInputData.CrouchClicked;
-    }
-    public bool GetJumpValue() {
-        return movementInputData.JumpClicked;
-    }
-    
-    private void OnEnable() {
-        inputActions.Enable();
-    }
-
-    private void OnDisable() {
-        inputActions.Disable();
     }
 
     // MOVEMENT - OLD INPUT SYSTEM

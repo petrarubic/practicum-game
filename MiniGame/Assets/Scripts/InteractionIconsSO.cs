@@ -13,12 +13,7 @@ public class InteractionIconsSO : ScriptableObject
     [ShowAssetPreview]
     public Sprite focusableIcon;
     [ShowAssetPreview]
-
-    public Sprite doorIcon;
-
-    [ShowAssetPreview]
     public Sprite puzzleTriggerIcon;
-
 
     public Sprite GetSprite(InteractionSpriteType interactionSpriteType) {
         switch (interactionSpriteType) {
@@ -30,8 +25,6 @@ public class InteractionIconsSO : ScriptableObject
                 return interactionIcon;
             case InteractionSpriteType.Focusable:
                 return focusableIcon;
-            case InteractionSpriteType.Door:
-                return doorIcon;
             default:
                 return null;
         }

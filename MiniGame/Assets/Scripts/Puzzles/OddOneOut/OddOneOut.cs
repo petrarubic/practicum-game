@@ -11,6 +11,7 @@ public class OddOneOut : PuzzleTrigger {
     public bool useShades;
     public bool useRotation;
     public bool useScale;
+    public bool useColors;
 
     public bool darkMode;
     public bool randomOddOne;
@@ -38,7 +39,7 @@ public class OddOneOut : PuzzleTrigger {
             ChangeScale();
         } else if (useRotation) {
             ChangeRotation();
-        } else {
+        } else if (useColors) {
             ChangeColors();
         }
         //foreach (Transform cubeChild in cubeParent.transform)
@@ -68,8 +69,10 @@ public class OddOneOut : PuzzleTrigger {
                         ChangeScale();
                     } else if (useRotation) {
                         ChangeRotation();
-                    } else {
+                    } else if (useColors) {
                         ChangeColors();
+                    } else {
+                        ChangeAll();
                     }
 
                     if (++index == colors.Length) index = 0;
@@ -127,8 +130,10 @@ public class OddOneOut : PuzzleTrigger {
                 ChangeScale();
             } else if (useRotation) {
                 ChangeRotation();
-            } else {
+            } else if (useColors) {
                 ChangeColors();
+            } else {
+                ChangeAll();
             }
 
             //foreach (Transform cubeChild in cubeParent.transform)
@@ -142,9 +147,9 @@ public class OddOneOut : PuzzleTrigger {
     }
 
     /// <summary>
-    /// Changes colors of all object and sets one to be odd
+    /// Changes scale, color and rotation of all object and sets one to be odd
     /// </summary>
-    void ChangeColors() {
+    void ChangeAll() {
         for (int i = 0; i < cubeParent.transform.childCount; i++) {
             if (i == oddOneIndex) {
                 int oddOneColorIndex = index + 1 == colors.Length ? 0 : index + 1;
@@ -152,13 +157,37 @@ public class OddOneOut : PuzzleTrigger {
                 int oddOneRotationIndex = index + 1 == rotation.Length ? 0 : index + 1;
                 cubeParent.transform.GetChild(i).transform.Rotate(new Vector3(rotation[oddOneRotationIndex], 0));
                 cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.color = colors[oddOneColorIndex];
+                cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.SetColor("_EmissionColor", colors[oddOneColorIndex]);
+                cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
                 cubeParent.transform.GetChild(i).transform.localScale = new Vector3(1.5f, scale[oddOneScaleIndex], scale[oddOneScaleIndex]);
                 oddOne = cubeParent.transform.GetChild(i).gameObject;
                 continue;
             }
             cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.color = colors[index];
+            cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.SetColor("_EmissionColor", colors[index]);
+            cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
             cubeParent.transform.GetChild(i).transform.localScale = new Vector3(1.5f, scale[index], scale[index]);
             cubeParent.transform.GetChild(i).transform.Rotate(new Vector3(rotation[index], 0));
+        }
+    }
+
+    void ChangeColors()
+    {
+        for (int i = 0; i < cubeParent.transform.childCount; i++)
+        {
+            if (i == oddOneIndex)
+            {
+                int oddOneColorIndex = index + 1 == colors.Length ? 0 : index + 1;
+                cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.color = colors[oddOneColorIndex];
+                cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.SetColor("_EmissionColor", colors[oddOneColorIndex]);
+                cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
+                oddOne = cubeParent.transform.GetChild(i).gameObject;
+                continue;
+            }
+
+            cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.color = colors[index];
+            cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.SetColor("_EmissionColor", colors[index]);
+            cubeParent.transform.GetChild(i).GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
         }
     }
 

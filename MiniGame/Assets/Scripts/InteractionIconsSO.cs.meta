@@ -3,7 +3,11 @@ guid: 3e20ae07ed631634eabc94f9d5932727
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - interactionIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  - pickupableIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  - focusableIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  - puzzleTriggerIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

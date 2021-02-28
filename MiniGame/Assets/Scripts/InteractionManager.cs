@@ -9,15 +9,14 @@ using DG.Tweening;
 
 // Controlling all the interactions with all interactable objects in the scene
 
-public enum InteractionSpriteType { None, Default, Interactable, Pickupable, Focusable, CantPickup, Door, PuzzleTrigger, MemoryTrigger }
+public enum InteractionSpriteType { None, Default, Interactable, Pickupable, Focusable, CantPickup, PuzzleTrigger, MemoryTrigger }
 public class InteractionManager : MonoBehaviour
 {
-
     public static InteractionManager instance;
 
     public bool useNewInteraction;
 
-    [SerializeField] private Camera mainCamera;
+    [SerializeField] Camera mainCamera;
 
     public Canvas playerCanvas;
 
@@ -71,7 +70,6 @@ public class InteractionManager : MonoBehaviour
 
     [Header("Other stuff")]
     public InteractionIconsSO interactionIcons;
-    public GameObject focusItemBlurVolume;
 
     [Header("Focused object info")]
     private GameObject focusedObject;
@@ -94,13 +92,10 @@ public class InteractionManager : MonoBehaviour
     //private OutlineObject lastObj;
     private IInteractable lastInteractableObj;
 
-    private PlayerInput inputActions;
-
     void Awake()
     {
         instance = this;
         DOTween.Init();
-        inputActions = new PlayerInput();
 
         levelSelect = GameObject.Find(ReadonlyStrings.LevelSelect);
         if (!!levelSelect)
@@ -122,8 +117,6 @@ public class InteractionManager : MonoBehaviour
 
     private void Start()
     {
-        if (!focusItemBlurVolume) focusItemBlurVolume = GameObject.Find("ItemBlur");
-        if (focusItemBlurVolume) focusItemBlurVolume.SetActive(false);
     }
 
     void Update()
@@ -201,7 +194,6 @@ public class InteractionManager : MonoBehaviour
 
     private void HideIcons()
     {
-        SetDescription("");
         ShowInteractionIcon(InteractionSpriteType.None);
         if (lastInteractableObj != null)
         {
@@ -221,10 +213,6 @@ public class InteractionManager : MonoBehaviour
             description = puzzleScript.GetDescription();
             puzzleScript.Hover();
             isHit = true;
-        }
-        if (isHit)
-        {
-            SetDescription(description);
         }
         return isHit;
     }
@@ -292,38 +280,9 @@ public class InteractionManager : MonoBehaviour
         if (hitObj.TryGetComponent<Item>(out pickupableScript))
         {
             isHit = true;
-            if (!isFocusing || !isFocusingHeldItem)
-            {
-                // Outline turn on/off feedback
-                //TurnOutline(pickupableHit);
-                if (heldItem == null)
-                {
-                    ShowInteractionIcon(InteractionSpriteType.Pickupable);
-                    SetDescription(pickupableScript.item.itemName);
-                }
-                if (heldItem == null && InputManager.IsInteractionKeyPressed() && !isFocusingHeldItem && !isBeingFocused)
-                {
-                    ShowInteractionIcon(InteractionSpriteType.None);
-                    SetDescription("");
-                    pickupDistance = Vector3.Distance(pickupableScript.transform.position, mainCamera.transform.position);
-                    if (pickupDistance > pickupMaxDistance)
-                    {
-                        pickupDistance = pickupMaxDistance;
-                    }
-                    else if (pickupDistance < pickupMinDistance)
-                    {
-                        pickupDistance = pickupMinDistance;
-                    }
-                    //Setting heldItem stuff
-                    ChangeHeldItem(pickupableScript.transform.GetComponent<Collider>());
-
-                    //heldItemCollider.enabled = false;
-                    //heldItemRb.isKinematic = true;
-
-                    //TODO: here goes lerp to hold pos 
-                }
-            }
+            Destroy(pickupableScript.gameObject);
         }
+
         return isHit;
     }
 
@@ -347,17 +306,6 @@ public class InteractionManager : MonoBehaviour
     {
         bool isHit = false;
         string description = "";
-        DoorsController doorsController = null;
-        if (hitObj.TryGetComponent<DoorsController>(out doorsController))
-        {
-            isHit = true;
-            description = doorsController.GetDescription();
-            doorsController.Hover();
-        }
-        if (isHit)
-        {
-            SetDescription(description);
-        }
         return isHit;
     }
     #endregion
@@ -424,33 +372,6 @@ public class InteractionManager : MonoBehaviour
         }
 
     }
-    /// <summary>
-    /// Sets the interaction description text to the given value
-    /// </summary>
-    /// <param name="description"></param>
-    private void SetDescription(string description)
-    {
-        //if (description == "") {
-        //    PlayerCanvasGenerated.InteractionDescriptionTMP.transform.DOScale(0, 0.3f).OnComplete(() => { PlayerCanvasGenerated.InteractionDescriptionTMP.text = description; });
-        //}
-        //else{
-        //    PlayerCanvasGenerated.InteractionDescriptionTMP.transform.DOScale(1, 0.3f).OnStart(() => { PlayerCanvasGenerated.InteractionDescriptionTMP.text = description; });
-        //}
-        if (lastInteractionDescription == description)
-        {
-            return;
-        }
-        lastInteractionDescription = description;
-        if (lastInteractionDescription == "")
-        {
-            //PlayerCanvasGenerated.InteractionDescriptionTMP.DOColor(Color.clear, 0.3f).OnComplete(() => { PlayerCanvasGenerated.InteractionDescriptionTMP.text = description; });
-        }
-        else
-        {
-            //PlayerCanvasGenerated.InteractionDescriptionTMP.DOColor(Color.white, 0.3f).OnStart(() => { PlayerCanvasGenerated.InteractionDescriptionTMP.text = description; });
-        }
-
-    }
 
     #endregion
 
@@ -502,7 +423,6 @@ public class InteractionManager : MonoBehaviour
         }
         if (InputManager.IsKeyPressed(KeyCode.R) && isFocusingHeldItem)
         {
-            if (focusItemBlurVolume) focusItemBlurVolume.SetActive(false);
             focusedObjectRb = null;
             focusedObject = null;
             heldItemRb = null;
@@ -616,7 +536,6 @@ public class InteractionManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        if (focusItemBlurVolume) focusItemBlurVolume.SetActive(true);
         focusedObjectRb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         focusedObjectRb.isKinematic = true;
         focusedObjectRb.useGravity = false;
@@ -637,7 +556,6 @@ public class InteractionManager : MonoBehaviour
         }
         currPos = focusedObject.transform.position;
         currRot = focusedObject.transform.rotation;
-        if (focusItemBlurVolume) focusItemBlurVolume.SetActive(false);
 
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
         RaycastHit hit;
